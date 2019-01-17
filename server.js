@@ -10,8 +10,8 @@ const PORT = 3000 || process.env.PORT;
 
 const app = express();
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
-app.set('view engins', 'handlebars');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 app.use(express.static('public'))
 
@@ -27,15 +27,21 @@ axios.get('https://www.nytimes.com/').then((response) => {
             sum: $(elem).find('p').text()
         }
         db.Article.create(articleObj).then((data) => {
-            console.log(data)
         }).catch((err) => {
             console.log(err)
         })
     })
-
 }).catch((err) => {
     console.log(err)
 })
+
+app.get('/', (req, res) => {
+    db.Article.find({}).then((result)=>{
+        res.render('home',{result: result})
+    })
+})
+
+
 
 app.listen(PORT, () => {
     console.log(`App is listing on port ${PORT}`)
