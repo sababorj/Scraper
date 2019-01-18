@@ -18,26 +18,27 @@ app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-axios.get('https://www.nytimes.com/').then((response) => {
-    const $ = cheerio.load(response.data);
-    $('article').each((i, elem) => {
-        let articleObj = {
-            link: `https://www.nytimes.com${$(elem).find('a').attr('href')}`,
-            title: $(elem).find('h2' || 'h3').text(),
-            sum: $(elem).find('p').text()
-        }
-        db.Article.create(articleObj).then((data) => {
-        }).catch((err) => {
-            console.log(err)
-        })
-    })
-}).catch((err) => {
-    console.log(err)
-})
+// store data is our DB
 
 app.get('/', (req, res) => {
-    db.Article.find({}).then((result)=>{
-        res.render('home',{result: result})
+    axios.get('https://www.nytimes.com/').then((response) => {
+        const $ = cheerio.load(response.data);
+        $('article').each((i, elem) => {
+            let articleObj = {
+                link: `https://www.nytimes.com${$(elem).find('a').attr('href')}`,
+                title: $(elem).find('h2' || 'h3').text(),
+                sum: $(elem).find('p').text()
+            }
+            db.Article.create(articleObj).then((data) => {
+                db.Article.find({}).then((result)=>{
+                    res.render('home',{result: result})
+                })
+            }).catch((err) => {
+                console.log(err)
+            })
+        })
+    }).catch((err) => {
+        console.log(err)
     })
 })
 
