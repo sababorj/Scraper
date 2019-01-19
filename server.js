@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const mongoose = require('mongoose');
 const db = require('./models');
 
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/NYScrapeDB', { useNewUrlParser: true })
+mongoose.connect("mongodb://localhost/populatedb" || process.env.MONGODB_URI);
 const PORT = 3000 || process.env.PORT;
 
 const app = express();
@@ -41,7 +41,7 @@ Store();
 
 // home route shows all articles stored
 app.get('/', (req, res) => {
-    db.Article.find({}).then((result) => {
+    db.Article.find({'wanted': false }).then((result) => {
         if (result.length > 0) {
             res.render('home', { result: result })
         } else {
