@@ -28,7 +28,7 @@
         <h3>
             <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{this.link}}">{{this.title}}</a>
             <a class="btn btn-danger delete" data-id={{this._id}}>Delete From Saved</a>
-            <a class="btn btn-info notes" data-id={{this._id}}>Article Notes</a>
+            <a class="btn btn-danger" href="/note/{{this._id}}" >Article Notes</a>
         </h3>
     </div>
     <div class="card-body">{{this.sum}}</div>

@@ -6,24 +6,26 @@ const ArticleSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    }, 
+    },
     link: {
         type: String,
         required: true
     },
     sum: {
         type: String
-    }, 
-    
+    },
+
     wanted: {
         type: Boolean,
         default: false
     },
 
-    note : {
-        type: Schema.Types.ObjectId,
-        ref: "Note"
-    }
+    notes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Note"
+        }
+    ]
 })
 
 const Article = mongoose.model('Article', ArticleSchema)

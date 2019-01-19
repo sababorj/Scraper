@@ -71,9 +71,9 @@ app.get('/save', (req, res) => {
 })
 
 // delete saved article
-app.get('/delete/:id', (req,res) => {
-    db.Article.findOneAndDelete({ _id: req.params.id}, (err, done)=>{
-        if (err){
+app.get('/delete/:id', (req, res) => {
+    db.Article.findOneAndDelete({ _id: req.params.id }, (err, done) => {
+        if (err) {
             console.log(err)
         }
     })
@@ -92,6 +92,27 @@ app.get('/clear', (req, res) => {
 // Scrape new articles
 app.get('/scrape', async (req, res) => {
     await Store();
+})
+
+// note route is specific to each saved article
+app.get('/note/:id', (req, res) => {
+    db.Article.find({_id: req.params.id })
+        .populate("notes")
+        .then(function (data) {
+            if (data[0].notes.length > 0) {
+                res.render('notes', { note: data.notes , id: req.params.id})
+            } else {
+                console.log('here in else')
+                res.render('notes', { noNote: true , id: req.params.id})
+            }
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+})
+
+app.post('/note', (req, res)=> {
+    
 })
 
 app.listen(PORT, () => {

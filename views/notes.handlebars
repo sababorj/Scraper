@@ -1,0 +1,16 @@
+<div class="jumbotron">
+<h2>Notes For Article: {{id}}</h2>
+{{#if noNote}}
+<h4>No notes for this article yet.</h4>
+{{/if}}
+<ul class="list-group note-container"></ul>
+{{#each note}}
+
+    <li class="list-group-item note">{{note.msg}}
+        <button class="btn btn-danger note-delete">delete</button>
+        </li>
+{{/each}}
+</ul>
+<textarea placeholder="New Note" rows="4" cols="60"></textarea>
+<button class="btn btn-success saveNote" data-id={{id}}>Save Note</button>
+</div>
