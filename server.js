@@ -3,9 +3,17 @@ const exphbs = require('express-handlebars');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const mongoose = require('mongoose');
-const db = require('./models');
 
-mongoose.connect("mongodb://localhost/populatedb" || process.env.MONGODB_URI);
+
+const locatURI = "mongodb://localhost/populatedb";
+if( process.env.MONGODB_URI){
+    mongoose.connect(process.env.MONGODB_URI)
+} else {
+    mongoose.connect(locatURI)
+}
+
+const db = require('./models');
+ 
 const PORT = 3000 || process.env.PORT;
 
 const app = express();
