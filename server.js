@@ -41,7 +41,7 @@ Store();
 
 // home route shows all articles stored
 app.get('/', (req, res) => {
-    db.Article.find({ 'wanted': false }).then((result) => {
+    db.Article.find({}).then((result) => {
         if (result.length > 0) {
             res.render('home', { result: result })
         } else {
@@ -96,14 +96,14 @@ app.get('/scrape', async (req, res) => {
 
 // note route is specific to each saved article
 app.get('/note/:id', (req, res) => {
-    db.Article.find({_id: req.params.id })
+    db.Article.find({ _id: req.params.id })
         .populate("notes")
         .then(function (data) {
             if (data[0].notes.length > 0) {
-                res.render('notes', { note: data.notes , id: req.params.id})
+                res.render('notes', { note: data[0].notes, id: req.params.id })
             } else {
                 console.log('here in else')
-                res.render('notes', { noNote: true , id: req.params.id})
+                res.render('notes', { noNote: true, id: req.params.id })
             }
         })
         .catch(function (err) {
@@ -111,8 +111,24 @@ app.get('/note/:id', (req, res) => {
         });
 })
 
-app.post('/note', (req, res)=> {
-    
+app.post('/note', (req, res) => {
+    db.Note.create({ msg: req.body.msg })
+        .then((notedata) => {
+            db.Article.findOneAndUpdate({ _id: req.body.id }, { $push: { notes: notedata._id } }, { new: true }, (err, data) => {
+                if (err) {
+                    console.log(err)
+                }
+                console.log(data)
+            })
+        })
+
+})
+
+
+app.delete('/note', (req, res) => {
+    db.Note.findByIdAndDelete({ _id: req.body.id }, (err, doc) => {
+        if (err) throw err
+    })
 })
 
 app.listen(PORT, () => {

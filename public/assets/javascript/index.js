@@ -40,6 +40,7 @@ $(document).ready(() => {
     })
 
     $('.saveNote').on('click', function (e) {
+        id = $(this).data('id');
         e.preventDefault();
         $.ajax({
             url: '/note',
@@ -51,6 +52,22 @@ $(document).ready(() => {
         }).then(() => {
             $('textarea').empty()
         })
-        window.location.reload();
+        window.location.href = `/note/${id}` ;
     })
+
+    $('.note-delete').on('click', function (e) {
+        id = $(this).data('id');
+        e.preventDefault();
+        $.ajax({
+            url: '/note',
+            method: 'DELETE',
+            data: {
+                id: $(this).data('id')
+             }
+        })
+        setTimeout(function () {
+            window.location.reload()
+        }, 100)
+    })
+
 })

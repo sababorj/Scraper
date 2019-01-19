@@ -1,13 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Mongo Scraper</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/save">Saved Articles</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="jumbotron">
 <h2>Notes For Article: {{id}}</h2>
 {{#if noNote}}
 <h4>No notes for this article yet.</h4>
 {{/if}}
-<ul class="list-group note-container"></ul>
+<ol class="list-group note-container"></ul>
 {{#each note}}
-
-    <li class="list-group-item note">{{note.msg}}
-        <button class="btn btn-danger note-delete">delete</button>
+    <li><p>{{this.msg}}</p>
+        <a class="btn btn-danger note-delete" data-id={{id}} >delete</a>
         </li>
 {{/each}}
 </ul>
