@@ -41,31 +41,48 @@ Store();
 
 // home route shows all articles stored
 app.get('/', (req, res) => {
-    db.Article.find({'wanted':false}).then((result) => {
-        res.render('home', { result: result , home: true})
+    db.Article.find({ 'wanted': false }).then((result) => {
+        if (result.length > 0) {
+            res.render('home', { result: result })
+        } else {
+            res.render('home', { noFound: true })
+        }
     })
 })
 
 // Save route is to update articles as saved and to present the saved articles only
 app.put('/save/:id', (req, res) => {
-    db.Article.findOneAndUpdate({_id : req.params.id},{'wanted': true}, {new: true}, (err, respo)=> {
-        if (err){
+    db.Article.findOneAndUpdate({ _id: req.params.id }, { 'wanted': true }, { new: true }, (err, respo) => {
+        if (err) {
             console.log(err)
         }
         console.log(respo)
     })
 })
 
-app.get('/save', (req,res)=> {
-    db.Article.find({'wanted':true}, (err, saveArticle) => {
-        res.render('home', {result: saveArticle , home: false})
+app.get('/save', (req, res) => {
+    db.Article.find({ 'wanted': true }, (err, saveArticle) => {
+        if (saveArticle.length > 0) {
+            res.render('save', { result: saveArticle })
+        } else {
+            res.render('save', { noFound: true })
+        }
     })
 })
 
-// delete route 
-app.get('/delete', (req,res) => {
+// delete saved article
+app.get('/delete/:id', (req,res) => {
+    db.Article.findOneAndDelete({ _id: req.params.id}, (err, done)=>{
+        if (err){
+            console.log(err)
+        }
+    })
+})
+
+// clear route will delete all articles from db
+app.get('/clear', (req, res) => {
     db.Article.deleteMany({}, (err, data) => {
-        if(err) {
+        if (err) {
             console.log(err)
         }
         res.json(data)
@@ -73,9 +90,9 @@ app.get('/delete', (req,res) => {
 })
 
 // Scrape new articles
-app.get('/scrape', async (req,res) => {
+app.get('/scrape', async (req, res) => {
     await Store();
-}) 
+})
 
 app.listen(PORT, () => {
     console.log(`App is listing on port ${PORT}`)

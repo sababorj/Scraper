@@ -12,7 +12,7 @@ $(document).ready( ()=> {
         $('.clear').on('click', function(e) {
             e.preventDefault();
             $.ajax({
-                url: '/delete',
+                url: '/clear',
                 method: 'GET'
             })
                 window.location.reload();
@@ -27,5 +27,15 @@ $(document).ready( ()=> {
             setTimeout(function(){
                 window.location.reload()
             } , 500)
+        })
+
+        $('.delete').on('click', function(e) {
+            e.preventDefault();
+            const id = $(this).data('id');
+            $.ajax({
+                url: `/delete/${id}`,
+                method: 'GET'
+            })
+            window.location.reload();
         })
 })
