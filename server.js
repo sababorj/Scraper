@@ -62,7 +62,21 @@ app.get('/save', (req,res)=> {
     })
 })
 
-//
+// delete route 
+app.get('/delete', (req,res) => {
+    db.Article.deleteMany({}, (err, data) => {
+        if(err) {
+            console.log(err)
+        }
+        res.json(data)
+    })
+})
+
+// Scrape new articles
+app.get('/scrape', async (req,res) => {
+    await Store();
+}) 
+
 app.listen(PORT, () => {
     console.log(`App is listing on port ${PORT}`)
 })

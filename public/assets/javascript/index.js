@@ -6,6 +6,26 @@ $(document).ready( ()=> {
                 url: `/save/${id}`,
                 method: 'PUT'
             })
-            window.location.href = '/'
+            window.location.reload(); 
+        });
+
+        $('.clear').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/delete',
+                method: 'GET'
+            })
+                window.location.reload();
+        })
+
+        $('.scrape-new').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url:'/scrape',
+                method: 'GET'
+            })
+            setTimeout(function(){
+                window.location.reload()
+            } , 500)
         })
 })
