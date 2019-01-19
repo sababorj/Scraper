@@ -52,7 +52,10 @@ $(document).ready(() => {
         }).then(() => {
             $('textarea').empty()
         })
-        window.location.href = `/note/${id}` ;
+        setTimeout(function () {
+            window.location.href = `/note/${id}` ;
+        }, 500)
+        
     })
 
     $('.note-delete').on('click', function (e) {
